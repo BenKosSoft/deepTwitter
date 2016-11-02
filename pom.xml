@@ -3,12 +3,12 @@
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>maven.mert</groupId>
-	<artifactId>maven-first</artifactId>
+	<groupId>edu.sabanciuniv.deeplearning</groupId>
+	<artifactId>DeepTwitter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>maven-first</name>
+	<name>DeepTwitter</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -41,6 +41,13 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.31</version>
+		</dependency>
+		<!-- Twitter 4j -->
+		<!-- https://mvnrepository.com/artifact/org.twitter4j/twitter4j-stream -->
+		<dependency>
+			<groupId>org.twitter4j</groupId>
+			<artifactId>twitter4j-stream</artifactId>
+			<version>4.0.4</version>
 		</dependency>
 		<!-- Test -->
 		<dependency>

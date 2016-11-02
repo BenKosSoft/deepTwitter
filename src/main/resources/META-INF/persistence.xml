@@ -3,12 +3,13 @@
   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
 http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
   version="2.1">
-  <persistence-unit name="twitterapp" transaction-type="RESOURCE_LOCAL">
+  <persistence-unit name="twitter" transaction-type="RESOURCE_LOCAL">
   <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+  <class>edu.sabanciuniv.deeplearning.model.Tweet</class>
   <properties>
-    <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/twitterapp" />
-    <property name="javax.persistence.jdbc.user" value="mertkosan" />
-    <property name="javax.persistence.jdbc.password" value="07031995" />
+    <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/twitter" />
+    <property name="javax.persistence.jdbc.user" value="deeptwitter" />
+    <property name="javax.persistence.jdbc.password" value="WayneBruce" />
     <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
     <property name="hibernate.show_sql" value="true" />
     <property name="hibernate.format_sql" value="true" />
