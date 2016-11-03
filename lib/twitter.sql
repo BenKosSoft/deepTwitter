@@ -34,8 +34,7 @@ CREATE TABLE IF NOT EXISTS `tweets` (
   `id` bigint(20) NOT NULL DEFAULT '0',
   `text` varchar(200) DEFAULT NULL,
   `lang` varchar(5) DEFAULT NULL,
-  `favcount` int(11) DEFAULT NULL,
-  `rtcount` int(11) DEFAULT NULL,
+  `followers` int(11) DEFAULT NULL,
   `username` varchar(50) DEFAULT NULL,
   `createdat` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)

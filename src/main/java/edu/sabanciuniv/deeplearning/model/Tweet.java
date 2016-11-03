@@ -20,11 +20,8 @@ public class Tweet {
 	@Column(name = "lang")
 	private String lang;
 	
-	@Column(name = "favcount")
-	private Integer favCount;
-	
-	@Column(name = "rtcount")
-	private Integer rtCount;
+	@Column(name = "followers")
+	private Integer followers;
 	
 	@Column(name = "username")
 	private String username;
@@ -56,20 +53,12 @@ public class Tweet {
 		this.lang = lang;
 	}
 
-	public Integer getFavCount() {
-		return favCount;
+	public Integer getFollowers() {
+		return followers;
 	}
 
-	public void setFavCount(Integer favCount) {
-		this.favCount = favCount;
-	}
-
-	public Integer getRtCount() {
-		return rtCount;
-	}
-
-	public void setRtCount(Integer rtCount) {
-		this.rtCount = rtCount;
+	public void setFollowers(Integer followers) {
+		this.followers = followers;
 	}
 
 	public String getUsername() {

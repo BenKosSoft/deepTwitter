@@ -7,7 +7,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
   <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
   <class>edu.sabanciuniv.deeplearning.model.Tweet</class>
   <properties>
-    <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/twitter?useUnicode=yes&amp;characterEncoding=utf8mb4" />
+    <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/twitter?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf8" />
     <property name="javax.persistence.jdbc.user" value="deeptwitter" />
     <property name="javax.persistence.jdbc.password" value="WayneBruce" />
     <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />

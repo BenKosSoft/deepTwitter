@@ -11,14 +11,17 @@ public class TweetRepository {
 	
 	public TweetRepository() {
 		this.em = PersistenceManager.INSTANCE.getEntityManager();	
+		em.getTransaction().begin();
+		em.createNativeQuery("SET NAMES 'utf8mb4'").executeUpdate();
+		em.getTransaction().commit();
 	}
 	
 	public void addTweet(Tweet tweet){
 		em.getTransaction()
         .begin();
 		em.persist(tweet);
-		em.getTransaction()
-        .commit();
+//		em.getTransaction()
+//        .commit();
 	}
 	
 	public void closeConnection(){

@@ -34,8 +34,7 @@ public class App
             	String username = status.getUser().getName();
             	Long date = status.getCreatedAt().getTime();
             	Long id = status.getId();
-            	Integer fvCount = status.getFavoriteCount();
-            	Integer rtCount = status.getRetweetCount();
+            	Integer followers = status.getUser().getFollowersCount();
             	if(lang != null && lang.equals("tr")){
             		System.out.println(username + " - " + lang + " - " + text);
             		Tweet tweet = new Tweet();
@@ -43,8 +42,7 @@ public class App
             		tweet.setText(text);
             		tweet.setUsername(username);
             		tweet.setCreatedat(date);
-            		tweet.setFavCount(fvCount);
-            		tweet.setRtCount(rtCount);
+            		tweet.setFollowers(followers);
             		tweet.setLang(lang);
             		tweetRepo.addTweet(tweet);
             	}
