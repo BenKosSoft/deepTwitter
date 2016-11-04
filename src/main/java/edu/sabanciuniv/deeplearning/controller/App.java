@@ -31,7 +31,7 @@ public class App
     		public void onStatus(Status status) {
             	String lang = status.getLang();
             	String text = status.getText();
-            	String username = status.getUser().getName();
+            	String username = status.getUser().getScreenName();
             	Long date = status.getCreatedAt().getTime();
             	Long id = status.getId();
             	Integer followers = status.getUser().getFollowersCount();
