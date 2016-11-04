@@ -34,9 +34,13 @@ public class TweetRepository {
 
 				if (em.getTransaction().isActive()){
 					synchronized (em) {
-						em.getTransaction().commit();
-						em.clear();
-						em.getTransaction().begin();
+						try{
+							em.getTransaction().commit();
+							em.clear();
+							em.getTransaction().begin();
+						}catch (Exception e) {
+							System.out.println("scheduler gives an error!"); 
+						}
 					}
 				}
 			}
@@ -45,7 +49,11 @@ public class TweetRepository {
 
 	public void addTweet(Tweet tweet) {
 		synchronized (em) {
-			em.persist(tweet);
+			try{
+				em.persist(tweet);
+			}catch (Exception e) {
+				System.out.println("em.persist(tweet) gives an error!"); 
+			}
 		}
 	}
 

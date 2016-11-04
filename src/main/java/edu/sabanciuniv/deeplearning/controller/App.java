@@ -36,7 +36,6 @@ public class App
             	Long id = status.getId();
             	Integer followers = status.getUser().getFollowersCount();
             	if(lang != null && lang.equals("tr")){
-            		System.out.println(username + " - " + lang + " - " + text);
             		Tweet tweet = new Tweet();
             		tweet.setId(id);
             		tweet.setText(text);
