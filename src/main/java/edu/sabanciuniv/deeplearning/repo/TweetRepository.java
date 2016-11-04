@@ -33,16 +33,20 @@ public class TweetRepository {
 				}
 
 				if (em.getTransaction().isActive()){
-					em.getTransaction().commit();
-					em.clear();
-					em.getTransaction().begin();
+					synchronized (em) {
+						em.getTransaction().commit();
+						em.clear();
+						em.getTransaction().begin();
+					}
 				}
 			}
 		}, 1, 1, TimeUnit.MINUTES);
 	}
 
 	public void addTweet(Tweet tweet) {
-		em.persist(tweet);
+		synchronized (em) {
+			em.persist(tweet);
+		}
 	}
 
 	public void closeConnection() {
