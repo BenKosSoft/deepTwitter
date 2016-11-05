@@ -35,11 +35,13 @@ public class TweetRepository {
 				if (em.getTransaction().isActive()){
 					synchronized (em) {
 						try{
+							//System.out.println("Commited!");
 							em.getTransaction().commit();
 							em.clear();
 							em.getTransaction().begin();
 						}catch (Exception e) {
 							System.out.println("scheduler gives an error!"); 
+							e.printStackTrace();
 						}
 					}
 				}
@@ -50,9 +52,10 @@ public class TweetRepository {
 	public void addTweet(Tweet tweet) {
 		synchronized (em) {
 			try{
-				em.persist(tweet);
+				em.merge(tweet); //persist gives an error, when there is duplicate... It cannot be done actually !
 			}catch (Exception e) {
 				System.out.println("em.persist(tweet) gives an error!"); 
+				e.printStackTrace();
 			}
 		}
 	}

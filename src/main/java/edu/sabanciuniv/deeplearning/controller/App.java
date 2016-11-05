@@ -23,6 +23,7 @@ public class App
     	TwitterAPI twitterAPI = new TwitterAPI();
     	TwitterStream stream = twitterAPI.getStream();
     	
+    	
     	StatusListener listener = new StatusListener() {
     		public void onStatus(Status status) {
             	String lang = status.getLang();
@@ -66,10 +67,9 @@ public class App
         };
         stream.addListener(listener);
         FilterQuery filtre = new FilterQuery();
-        String language = "tr";
         String[] keywordsArray = {"a","e","o","u","i"};
         filtre.track(keywordsArray);
         stream.filter(filtre);
-        stream.sample(language);
+        filtre.language(new String[]{"tr"});
     }
 }
