@@ -1,13 +1,9 @@
 package edu.sabanciuniv.deeplearning.controller;
 
-import java.sql.Date;
-
-import javax.persistence.EntityManager;
-
 import edu.sabanciuniv.deeplearning.model.Tweet;
 import edu.sabanciuniv.deeplearning.repo.TweetRepository;
-import edu.sabanciuniv.deeplearning.service.PersistenceManager;
 import edu.sabanciuniv.deeplearning.service.TwitterAPI;
+import twitter4j.FilterQuery;
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
@@ -30,12 +26,13 @@ public class App
     	StatusListener listener = new StatusListener() {
     		public void onStatus(Status status) {
             	String lang = status.getLang();
-            	String text = status.getText();
+            	String text = status.getText().replaceAll("\\r\\n|\\r|\\n|\\t", " "); //replace end line and tabs to space
             	String username = status.getUser().getScreenName();
             	Long date = status.getCreatedAt().getTime();
             	Long id = status.getId();
             	Integer followers = status.getUser().getFollowersCount();
-            	if(lang != null && lang.equals("tr")){
+            	//System.out.println(lang + " " + text);
+            	if(lang != null && lang.equals("tr")){ //check lang is tr for security
             		Tweet tweet = new Tweet();
             		tweet.setId(id);
             		tweet.setText(text);
@@ -68,6 +65,11 @@ public class App
             }
         };
         stream.addListener(listener);
-        stream.sample();
+        FilterQuery filtre = new FilterQuery();
+        String language = "tr";
+        String[] keywordsArray = {"a","e","o","u","i"};
+        filtre.track(keywordsArray);
+        stream.filter(filtre);
+        stream.sample(language);
     }
 }
