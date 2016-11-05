@@ -32,16 +32,17 @@ public class TweetRepository {
 					return;
 				}
 
-				if (em.getTransaction().isActive()){
+				if (em.getTransaction().isActive()) {
 					synchronized (em) {
-						try{
-							//System.out.println("Commited!");
+						try {
+							// System.out.println("Commited!");
 							em.getTransaction().commit();
+						} catch (Exception e) {
+							System.err.println("Scheduler gives an error, during commit.");
+							System.err.println(e.getMessage());
+						} finally {
 							em.clear();
 							em.getTransaction().begin();
-						}catch (Exception e) {
-							System.out.println("scheduler gives an error!"); 
-							System.out.println(e.getMessage());
 						}
 					}
 				}
@@ -51,11 +52,16 @@ public class TweetRepository {
 
 	public void addTweet(Tweet tweet) {
 		synchronized (em) {
-			try{
-				em.merge(tweet); //persist gives an error, when there is duplicate... It cannot be done actually !
-			}catch (Exception e) {
-				System.out.println("em.persist(tweet) gives an error!"); 
-				System.out.println(e.getMessage());
+			try {
+				if (em.getTransaction().isActive())
+					em.merge(tweet); // persist gives an error, when there is duplicate... It cannot be done actually !
+				else{
+					System.err.println("[WARNING]: Transaction is inactive. Reinitilizing the transaction.");
+					em.getTransaction().begin();
+				}
+			} catch (Exception e) {
+				System.err.println("em.merge(tweet) gives an error!");
+				System.err.println(e.getMessage());
 			}
 		}
 	}
