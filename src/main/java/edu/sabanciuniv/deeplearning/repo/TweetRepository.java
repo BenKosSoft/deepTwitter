@@ -41,7 +41,7 @@ public class TweetRepository {
 							em.getTransaction().begin();
 						}catch (Exception e) {
 							System.out.println("scheduler gives an error!"); 
-							e.printStackTrace();
+							System.out.println(e.getMessage());
 						}
 					}
 				}
@@ -55,7 +55,7 @@ public class TweetRepository {
 				em.merge(tweet); //persist gives an error, when there is duplicate... It cannot be done actually !
 			}catch (Exception e) {
 				System.out.println("em.persist(tweet) gives an error!"); 
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 			}
 		}
 	}
