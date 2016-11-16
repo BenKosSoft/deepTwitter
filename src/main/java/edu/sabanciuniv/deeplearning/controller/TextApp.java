@@ -2,6 +2,8 @@ package edu.sabanciuniv.deeplearning.controller;
 
 import java.io.PrintWriter;
 import java.util.List;
+
+import edu.sabanciuniv.deeplearning.model.Tweet;
 import edu.sabanciuniv.deeplearning.repo.TweetRepository;
 
 public class TextApp {
@@ -9,23 +11,25 @@ public class TextApp {
 	private static TweetRepository tweetRepo = new TweetRepository();
 
 	public static void main(String[] args) {
+		long tweetCount = tweetRepo.getTweetCont();
+		
+		for (int i = 0; i < tweetCount; i++) {
+			List<Object[]> tweetBatch = tweetRepo.getTweetsBatch(Tweet.BATCH_SIZE*i);
+			try {
+				PrintWriter writer = new PrintWriter("tweets.txt", "UTF-8");
+				System.out.println("Tweet extraction is started...");
 
-		List<Object[]> allTweets = tweetRepo.getAllTweetTexts();
+				for (Object t : tweetBatch) {
+					String text = t.toString();
+					text = prepareTweet(text);
+					writer.println(text);
+				}
 
-		try {
-			PrintWriter writer = new PrintWriter("tweets.txt", "UTF-8");
-			System.out.println("Tweet extraction is started...");
-			
-			for (Object t : allTweets) {
-				String text = t.toString();
-				text = prepareTweet(text);
-				writer.println(text);
+				writer.flush();
+				writer.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
 			}
-
-			writer.flush();
-			writer.close();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 
 		System.out.println("Tweet extraction is done...");
@@ -33,10 +37,12 @@ public class TextApp {
 	}
 
 	private static String prepareTweet(String text) {
-		text = text.replaceAll("\\r\\n|\\r|\\n|\\t", " "); // remove all newlines
+		text = text.replaceAll("\\r\\n|\\r|\\n|\\t", " "); // remove all
+															// newlines
 		text = text.replaceAll("@\\S+", ""); // remove usernames starting with @
 		text = text.replaceAll("https?://\\S+\\s?", " "); // remove urls
-		text = text.replaceAll("[\\[\\]\\{\\}\\/,\"-.!|?:;‘’“”…`)(]", " "); // remove punc
+		text = text.replaceAll("[\\[\\]\\{\\}\\/,\"-.!|?:;‘’“”…`)(]", " "); // remove
+																			// punc
 		text = normalizeTurkishLetters(text).toLowerCase();
 		text = text.replaceAll("[^\\x00-\\x7F]", " "); // remove unicode chars
 		text = removeWordsShorterThan3(text);
@@ -73,11 +79,11 @@ public class TextApp {
 
 	}
 
-	private static String removeWordsShorterThan3(String passage){
+	private static String removeWordsShorterThan3(String passage) {
 
-    	passage = passage.replaceAll("\\b[\\w']{1,2}\\b", "");
-    	passage = passage.replaceAll("\\s{2,}", " ");
-    	return passage;
-    }
+		passage = passage.replaceAll("\\b[\\w']{1,2}\\b", "");
+		passage = passage.replaceAll("\\s{2,}", " ");
+		return passage;
+	}
 
 }

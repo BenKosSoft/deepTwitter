@@ -55,8 +55,10 @@ public class TweetRepository {
 		synchronized (em) {
 			try {
 				if (em.getTransaction().isActive())
-					em.merge(tweet); // persist gives an error, when there is duplicate... It cannot be done actually !
-				else{
+					em.merge(tweet); // persist gives an error, when there is
+										// duplicate... It cannot be done
+										// actually !
+				else {
 					System.err.println("[WARNING]: Transaction is inactive. Reinitilizing the transaction.");
 					em.getTransaction().begin();
 				}
@@ -66,10 +68,22 @@ public class TweetRepository {
 			}
 		}
 	}
-	
-	public List<Object[]> getAllTweetTexts(){		
+
+	public List<Object[]> getAllTweetTexts() {
 		List<Object[]> results = em.createNamedQuery(Tweet.GET_ALL_TWEETS_TEXT, Object[].class).getResultList();
 		return results;
+	}
+
+	public List<Object[]> getTweetsBatch(int offset) {
+		List<Object[]> results = em.createNamedQuery(Tweet.GET_ALL_TWEETS_TEXT, Object[].class)
+				.setFirstResult(offset).setMaxResults(Tweet.BATCH_SIZE).getResultList();
+		return results;
+	}
+	
+	public long getTweetCont(){
+		Long result = em.createNamedQuery(Tweet.GET_ENTRY_COUNT, Long.class)
+						.getSingleResult();
+		return result;
 	}
 
 	public void closeConnection() {
