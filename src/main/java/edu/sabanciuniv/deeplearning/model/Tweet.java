@@ -12,14 +12,14 @@ import javax.persistence.Table;
     @NamedQuery(name=Tweet.GET_ALL_TWEETS_TEXT,
                 query="SELECT t.text FROM Tweet t"),
     @NamedQuery(name=Tweet.GET_ENTRY_COUNT,
-    			query="SELECT COUNT(*) FROM Tweet")
+    			query="SELECT COUNT(t) FROM Tweet t")
 })
 @Table(name = "tweets")
 public class Tweet {
 	
 	public static final String GET_ALL_TWEETS_TEXT = "GET_ALL_TWEETS_TEXT";
 	public static final String GET_ENTRY_COUNT = "GET_ENTRY_COUNT";
-	public static final Integer BATCH_SIZE = 1000;
+	public static final Integer BATCH_SIZE = 10000;
 	
 	@Id
 	@Column(name = "id")

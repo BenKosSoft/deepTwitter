@@ -80,7 +80,7 @@ public class TweetRepository {
 		return results;
 	}
 	
-	public long getTweetCont(){
+	public long getTweetCount(){
 		Long result = em.createNamedQuery(Tweet.GET_ENTRY_COUNT, Long.class)
 						.getSingleResult();
 		return result;

@@ -11,29 +11,34 @@ public class TextApp {
 	private static TweetRepository tweetRepo = new TweetRepository();
 
 	public static void main(String[] args) {
-		long tweetCount = tweetRepo.getTweetCont();
-		
-		for (int i = 0; i < tweetCount; i++) {
-			List<Object[]> tweetBatch = tweetRepo.getTweetsBatch(Tweet.BATCH_SIZE*i);
-			try {
-				PrintWriter writer = new PrintWriter("tweets.txt", "UTF-8");
-				System.out.println("Tweet extraction is started...");
+		//long startTime = System.nanoTime();
+		long tweetCount = tweetRepo.getTweetCount();
 
+		try {
+
+			PrintWriter writer = new PrintWriter("tweets.txt", "UTF-8");
+			System.out.println("Tweet extraction is started...");
+			
+			for (int i = 0; i <= tweetCount / Tweet.BATCH_SIZE; i++) {
+				List<Object[]> tweetBatch = tweetRepo.getTweetsBatch(Tweet.BATCH_SIZE * i);
+				//List<Object[]> tweetBatch = tweetRepo.getAllTweetTexts();
 				for (Object t : tweetBatch) {
 					String text = t.toString();
 					text = prepareTweet(text);
 					writer.println(text);
 				}
-
 				writer.flush();
-				writer.close();
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
 			}
+			writer.close();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 
 		System.out.println("Tweet extraction is done...");
 		tweetRepo.closeConnection();
+		//long estimatedTime = System.nanoTime()- startTime;
+		//System.out.println(estimatedTime);
 	}
 
 	private static String prepareTweet(String text) {
