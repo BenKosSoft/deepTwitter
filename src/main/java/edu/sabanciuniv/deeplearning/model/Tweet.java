@@ -7,6 +7,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
+
 @Entity
 @NamedQueries({
     @NamedQuery(name=Tweet.GET_ALL_TWEETS_TEXT,

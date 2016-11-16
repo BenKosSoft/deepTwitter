@@ -18,7 +18,7 @@ public class TextApp {
 			
 			for (Object t : allTweets) {
 				String text = t.toString();
-				prepareTweet(text);
+				text = prepareTweet(text);
 				writer.println(text);
 			}
 
@@ -32,14 +32,15 @@ public class TextApp {
 		tweetRepo.closeConnection();
 	}
 
-	private static void prepareTweet(String text) {
-		text=text.replaceAll("\\r\\n|\\r|\\n|\\t"," "); // remove all newlines
-		text=text.replaceAll("https?://\\S+\\s?"," "); // remove urls
-		text=text.replaceAll("[\\[\\]\\{\\}\\/,\"-.!?:;‘’“”…`)(]"," "); // remove																// punc
-		text= normalizeTurkishLetters(text).toLowerCase();
+	private static String prepareTweet(String text) {
+		text = text.replaceAll("\\r\\n|\\r|\\n|\\t", " "); // remove all newlines
+		text = text.replaceAll("@\\S+", ""); // remove usernames starting with @
+		text = text.replaceAll("https?://\\S+\\s?", " "); // remove urls
+		text = text.replaceAll("[\\[\\]\\{\\}\\/,\"-.!|?:;‘’“”…`)(]", " "); // remove punc
+		text = normalizeTurkishLetters(text).toLowerCase();
 		text = text.replaceAll("[^\\x00-\\x7F]", " "); // remove unicode chars
-	    text = text.replaceAll("@\\S+", ""); // remove usernames starting with @
-	    text = removeWordsShorterThan3(text);
+		text = removeWordsShorterThan3(text);
+		return text;
 	}
 
 	private static String normalizeTurkishLetters(String s) {
