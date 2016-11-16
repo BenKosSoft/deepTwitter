@@ -3,11 +3,20 @@ package edu.sabanciuniv.deeplearning.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name=Tweet.GET_ALL_TWEETS_TEXT,
+                query="SELECT t.text FROM Tweet t")
+})
 @Table(name = "tweets")
 public class Tweet {
+	
+	public static final String GET_ALL_TWEETS_TEXT = "GET_ALL_TWEETS_TEXT";
+	
 	@Id
 	@Column(name = "id")
 	private Long id;

@@ -5,7 +5,7 @@
 
 	<groupId>edu.sabanciuniv.deeplearning</groupId>
 	<artifactId>DeepTwitter</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.2.2-TweetExtraction</version>
 	<packaging>jar</packaging>
 
 	<name>DeepTwitter</name>
@@ -88,7 +88,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>edu.sabanciuniv.deeplearning.controller.App</mainClass>
+							<mainClass>edu.sabanciuniv.deeplearning.controller.TextApp</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

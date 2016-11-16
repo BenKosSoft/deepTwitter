@@ -1,5 +1,6 @@
 package edu.sabanciuniv.deeplearning.repo;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -64,6 +65,11 @@ public class TweetRepository {
 				System.err.println(e.getMessage());
 			}
 		}
+	}
+	
+	public List<Object[]> getAllTweetTexts(){		
+		List<Object[]> results = em.createNamedQuery(Tweet.GET_ALL_TWEETS_TEXT, Object[].class).getResultList();
+		return results;
 	}
 
 	public void closeConnection() {
