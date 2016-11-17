@@ -5,7 +5,7 @@
 
 	<groupId>edu.sabanciuniv.deeplearning</groupId>
 	<artifactId>DeepTwitter</artifactId>
-	<version>1.3.0-TweetExtraction</version>
+	<version>1.3.1-TweetExtraction</version>
 	<packaging>jar</packaging>
 
 	<name>DeepTwitter</name>
