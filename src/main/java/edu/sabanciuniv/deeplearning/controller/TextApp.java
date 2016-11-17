@@ -30,7 +30,7 @@ public class TextApp {
 					writer.println(text);
 				}
 				writer.flush();
-				System.out.printf("\r\r%f", i/limit);
+				System.out.printf("\r\r%3.3f", i/limit);
 			}
 			writer.close();
 
