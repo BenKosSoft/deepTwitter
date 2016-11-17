@@ -19,7 +19,9 @@ public class TextApp {
 			PrintWriter writer = new PrintWriter("tweets.txt", "UTF-8");
 			System.out.println("Tweet extraction is started...");
 			
-			for (int i = 0; i <= tweetCount / Tweet.BATCH_SIZE; i++) {
+			System.out.printf("Progress % 0 ");
+			long limit = tweetCount / Tweet.BATCH_SIZE;
+			for (int i = 0; i <= limit; i++) {
 				List<Object[]> tweetBatch = tweetRepo.getTweetsBatch(Tweet.BATCH_SIZE * i);
 				//List<Object[]> tweetBatch = tweetRepo.getAllTweetTexts();
 				for (Object t : tweetBatch) {
@@ -28,6 +30,7 @@ public class TextApp {
 					writer.println(text);
 				}
 				writer.flush();
+				System.out.printf("\r\r%f", i/limit);
 			}
 			writer.close();
 

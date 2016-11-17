@@ -25,30 +25,30 @@ public class TweetRepository {
 		em.getTransaction().begin();
 
 		// start the scheduler
-		scheduler.scheduleAtFixedRate(new Runnable() {
-			@Override
-			public void run() {
-				if (!em.isOpen()) {
-					scheduler.shutdown();
-					return;
-				}
-
-				if (em.getTransaction().isActive()) {
-					synchronized (em) {
-						try {
-							// System.out.println("Commited!");
-							em.getTransaction().commit();
-						} catch (Exception e) {
-							System.err.println("Scheduler gives an error, during commit.");
-							System.err.println(e.getMessage());
-						} finally {
-							em.clear();
-							em.getTransaction().begin();
-						}
-					}
-				}
-			}
-		}, 1, 1, TimeUnit.MINUTES);
+//		scheduler.scheduleAtFixedRate(new Runnable() {
+//			@Override
+//			public void run() {
+//				if (!em.isOpen()) {
+//					scheduler.shutdown();
+//					return;
+//				}
+//
+//				if (em.getTransaction().isActive()) {
+//					synchronized (em) {
+//						try {
+//							// System.out.println("Commited!");
+//							em.getTransaction().commit();
+//						} catch (Exception e) {
+//							System.err.println("Scheduler gives an error, during commit.");
+//							System.err.println(e.getMessage());
+//						} finally {
+//							em.clear();
+//							em.getTransaction().begin();
+//						}
+//					}
+//				}
+//			}
+//		}, 1, 1, TimeUnit.MINUTES);
 	}
 
 	public void addTweet(Tweet tweet) {
