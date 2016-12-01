@@ -5,7 +5,7 @@
 
 	<groupId>edu.sabanciuniv.deeplearning</groupId>
 	<artifactId>DeepTwitter</artifactId>
-	<version>1.4.0-TweetExtraction</version>
+	<version>1.4.0</version>
 	<packaging>jar</packaging>
 
 	<name>DeepTwitter</name>
@@ -94,6 +94,8 @@
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
+					<finalName>${artifactId}-${version}-TweetExtraction</finalName>
+        			<appendAssemblyId>false</appendAssemblyId>
 				</configuration>
 				<executions>
 					<execution>
