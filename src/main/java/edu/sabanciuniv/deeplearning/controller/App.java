@@ -22,7 +22,7 @@ public class App
     {
     	TwitterAPI twitterAPI = new TwitterAPI();
     	TwitterStream stream = twitterAPI.getStream();
-    	
+    	tweetRepo.startScheduler();
     	
     	StatusListener listener = new StatusListener() {
     		public void onStatus(Status status) {

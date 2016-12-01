@@ -11,38 +11,47 @@ public class TextApp {
 	private static TweetRepository tweetRepo = new TweetRepository();
 
 	public static void main(String[] args) {
-		//long startTime = System.nanoTime();
+		
+		long processTime = 0;
 		long tweetCount = tweetRepo.getTweetCount();
-
 		try {
 
 			PrintWriter writer = new PrintWriter("tweets.txt", "UTF-8");
 			System.out.println("Tweet extraction is started...");
 			
 			long limit = tweetCount / Tweet.BATCH_SIZE;
+			Long lastId = (long) 0;
+			long startTimeTotal = System.currentTimeMillis();
+			long startTime = System.currentTimeMillis();
 			for (int i = 0; i <= limit; i++) {
-				List<Object[]> tweetBatch = tweetRepo.getTweetsBatch(Tweet.BATCH_SIZE * i);
+				//System.out.println(lastId);
+				List<Object[]> tweetBatch = tweetRepo.getTweetsBatch(lastId);
+				//List<Object[]> tweetBatch = tweetRepo.getTweetsBatch(Tweet.BATCH_SIZE * i);
 				//List<Object[]> tweetBatch = tweetRepo.getAllTweetTexts();
-				for (Object t : tweetBatch) {
-					String text = t.toString();
+				for (Object [] t : tweetBatch) {
+					lastId = Long.valueOf(t[0].toString());
+					String text = t[1].toString();
 					text = prepareTweet(text);
-					writer.println(text);
+					writer.println(text.trim());
 				}
 				writer.flush();
 				if(i % 16 == 0){
 					System.out.println((i+1)*Tweet.BATCH_SIZE + " is done!");
+					long currentTime = System.currentTimeMillis();
+					//long estimatedTime = currentTime - startTime;
+					startTime = currentTime;
+					//System.out.println(estimatedTime);
 				}
 			}
 			writer.close();
-
+			processTime = System.currentTimeMillis() - startTimeTotal;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 
 		System.out.println("Tweet extraction is done...");
 		tweetRepo.closeConnection();
-		//long estimatedTime = System.nanoTime()- startTime;
-		//System.out.println(estimatedTime);
+		System.out.println("It takes " + processTime / 1000 + " seconds!");
 	}
 
 	private static String prepareTweet(String text) {

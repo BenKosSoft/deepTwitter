@@ -23,32 +23,6 @@ public class TweetRepository {
 		em.createNativeQuery("SET NAMES 'utf8mb4'").executeUpdate();
 		em.getTransaction().commit();
 		em.getTransaction().begin();
-
-		// start the scheduler
-//		scheduler.scheduleAtFixedRate(new Runnable() {
-//			@Override
-//			public void run() {
-//				if (!em.isOpen()) {
-//					scheduler.shutdown();
-//					return;
-//				}
-//
-//				if (em.getTransaction().isActive()) {
-//					synchronized (em) {
-//						try {
-//							// System.out.println("Commited!");
-//							em.getTransaction().commit();
-//						} catch (Exception e) {
-//							System.err.println("Scheduler gives an error, during commit.");
-//							System.err.println(e.getMessage());
-//						} finally {
-//							em.clear();
-//							em.getTransaction().begin();
-//						}
-//					}
-//				}
-//			}
-//		}, 1, 1, TimeUnit.MINUTES);
 	}
 
 	public void addTweet(Tweet tweet) {
@@ -74,15 +48,29 @@ public class TweetRepository {
 		return results;
 	}
 
-	public List<Object[]> getTweetsBatch(int offset) {
-		List<Object[]> results = em.createNamedQuery(Tweet.GET_ALL_TWEETS_TEXT, Object[].class)
-				.setFirstResult(offset).setMaxResults(Tweet.BATCH_SIZE).getResultList();
+	/*
+	 * get tweets by lastID
+	 */
+	public List<Object[]> getTweetsBatch(Long lastId) {
+		List<Object[]> results = em.createNamedQuery(Tweet.GET_ALL_TWEETS_TEXT_GREATER_LAST, Object[].class)
+				.setParameter("lastId", lastId)
+				.setFirstResult(0)
+				.setMaxResults(Tweet.BATCH_SIZE).getResultList();
 		return results;
 	}
 	
-	public long getTweetCount(){
-		Long result = em.createNamedQuery(Tweet.GET_ENTRY_COUNT, Long.class)
-						.getSingleResult();
+	/*
+	 * get tweets by offset
+	 */
+	public List<Object[]> getTweetsBatch(int offset) {
+		List<Object[]> results = em.createNamedQuery(Tweet.GET_ALL_TWEETS_TEXT, Object[].class)
+				.setFirstResult(offset)
+				.setMaxResults(Tweet.BATCH_SIZE).getResultList();
+		return results;
+	}
+
+	public long getTweetCount() {
+		Long result = em.createNamedQuery(Tweet.GET_ENTRY_COUNT, Long.class).getSingleResult();
 		return result;
 	}
 
@@ -92,5 +80,33 @@ public class TweetRepository {
 
 		// close scheduler
 		scheduler.shutdown();
+	}
+
+	public void startScheduler() {
+		// start the scheduler
+		scheduler.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				if (!em.isOpen()) {
+					scheduler.shutdown();
+					return;
+				}
+
+				if (em.getTransaction().isActive()) {
+					synchronized (em) {
+						try {
+							// System.out.println("Commited!");
+							em.getTransaction().commit();
+						} catch (Exception e) {
+							System.err.println("Scheduler gives an error, during commit.");
+							System.err.println(e.getMessage());
+						} finally {
+							em.clear();
+							em.getTransaction().begin();
+						}
+					}
+				}
+			}
+		}, 1, 1, TimeUnit.MINUTES);
 	}
 }
