@@ -8,100 +8,113 @@ import edu.sabanciuniv.deeplearning.repo.TweetRepository;
 
 public class TextApp {
 
-	private static TweetRepository tweetRepo = new TweetRepository();
+    private static TweetRepository tweetRepo = new TweetRepository();
 
-	public static void main(String[] args) {
-		
-		long processTime = 0;
-		long tweetCount = tweetRepo.getTweetCount();
-		try {
+    public static void main(String[] args) {
 
-			PrintWriter writer = new PrintWriter("tweets.txt", "UTF-8");
-			System.out.println("Tweet extraction is started...");
-			
-			long limit = tweetCount / Tweet.BATCH_SIZE;
-			Long lastId = (long) 0;
-			long startTimeTotal = System.currentTimeMillis();
-			long startTime = System.currentTimeMillis();
-			for (int i = 0; i <= limit; i++) {
-				//System.out.println(lastId);
-				List<Object[]> tweetBatch = tweetRepo.getTweetsBatch(lastId);
-				//List<Object[]> tweetBatch = tweetRepo.getTweetsBatch(Tweet.BATCH_SIZE * i);
-				//List<Object[]> tweetBatch = tweetRepo.getAllTweetTexts();
-				for (Object [] t : tweetBatch) {
-					lastId = Long.valueOf(t[0].toString());
-					String text = t[1].toString();
-					text = prepareTweet(text);
-					writer.println(text.trim());
-				}
-				writer.flush();
-				if(i % 16 == 0){
-					System.out.println((i+1)*Tweet.BATCH_SIZE + " is done!");
-					long currentTime = System.currentTimeMillis();
-					//long estimatedTime = currentTime - startTime;
-					startTime = currentTime;
-					//System.out.println(estimatedTime);
-				}
-			}
-			writer.close();
-			processTime = System.currentTimeMillis() - startTimeTotal;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+        long processTime = 0;
+        long tweetCount = tweetRepo.getTweetCount();
+        try {
 
-		System.out.println("Tweet extraction is done...");
-		tweetRepo.closeConnection();
-		System.out.println("It takes " + processTime / 1000 + " seconds!");
-	}
+            PrintWriter writer = new PrintWriter("tweets.txt", "UTF-8");
+            System.out.println("Tweet extraction is started...");
 
-	private static String prepareTweet(String text) {
-		text = text.replaceAll("\\r\\n|\\r|\\n|\\t", " "); // remove all
-															// newlines
-		text = text.replaceAll("@\\S+", ""); // remove usernames starting with @
-		text = text.replaceAll("https?://\\S+\\s?", " "); // remove urls
-		text = text.replaceAll("[\\[\\]\\{\\}\\/,\"-.!|?:;‘’“”…`)(]", " "); // remove
-																			// punc
-		text = normalizeTurkishLetters(text).toLowerCase();
-		text = text.replaceAll("[^\\x00-\\x7F]", " "); // remove unicode chars
-		text = removeWordsShorterThan3(text);
-		return text;
-	}
+            long limit = tweetCount / Tweet.BATCH_SIZE;
+            Long lastId = (long) 0;
+            long startTimeTotal = System.currentTimeMillis();
+            long startTime = System.currentTimeMillis();
+            for (int i = 0; i <= limit; i++) {
+                //System.out.println(lastId);
+                List<Object[]> tweetBatch = tweetRepo.getTweetsBatch(lastId);
+                //List<Object[]> tweetBatch = tweetRepo.getTweetsBatch(Tweet.BATCH_SIZE * i);
+                //List<Object[]> tweetBatch = tweetRepo.getAllTweetTexts();
+                for (Object[] t : tweetBatch) {
+                    lastId = Long.valueOf(t[0].toString());
+                    String text = t[1].toString();
+                    text = prepareTweet(text);
+                    writer.println(text.trim());
+                }
+                writer.flush();
+                if (i % 16 == 0) {
+                    System.out.println((i + 1) * Tweet.BATCH_SIZE + " is done!");
+                    long currentTime = System.currentTimeMillis();
+                    long estimatedTime = currentTime - startTime;
+                    startTime = currentTime;
+                    System.out.println(estimatedTime);
+                }
+            }
+            writer.close();
+            processTime = System.currentTimeMillis() - startTimeTotal;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-	private static String normalizeTurkishLetters(String s) {
+        System.out.println("Tweet extraction is done...");
+        tweetRepo.closeConnection();
+        System.out.println("It takes " + processTime / 1000 + " seconds!");
+    }
 
-		s = s.replaceAll("ı", "i");
+    private static String prepareTweet(String text) {
 
-		s = s.replaceAll("ö", "o");
+//		text = text.replaceAll("\\r\\n|\\r|\\n|\\t", " "); // remove all
+//															// newlines
+//		text = text.replaceAll("@\\S+", ""); // remove usernames starting with @
+//		text = text.replaceAll("https?://\\S+\\s?", " "); // remove urls
+//		text = text.replaceAll("[\\[\\]\\{\\}\\/,\"-.!|?:;‘’“”…`)(]", " "); // remove punc
+//		text = normalizeTurkishLetters(text).toLowerCase();
+//		text = text.replaceAll("[^\\x00-\\x7F]", " "); // remove unicode chars
+//		text = removeWordsShorterThan3(text);
+//		return text;
+        text = normalizeTurkishLetters(text);
+        String regex = new StringBuilder()
+                .append("(https?://\\S+\\s?)")      //URLs
+                .append("|((\\S+)?@\\S+)")          //e-mails and @username s
+                .append("|[^0-9A-Za-z]")            //anything that is not alphanumerical
+                .append("|(\\b[\\w']{1,2}\\b)")     //words shorter than 3 chars.
+                .toString();
 
-		s = s.replaceAll("ü", "u");
+        return text.replaceAll(regex, " ").replaceAll("\\s{2,}", " ");
+    }
 
-		s = s.replaceAll("ş", "s");
+    private static String normalizeTurkishLetters(String s) {
 
-		s = s.replaceAll("ğ", "g");
+//		s = s.replaceAll("ı", "i");
+//
+//		s = s.replaceAll("ö", "o");
+//
+//		s = s.replaceAll("ü", "u");
+//
+//		s = s.replaceAll("ş", "s");
+//
+//		s = s.replaceAll("ğ", "g");
+//
+//		s = s.replaceAll("ç", "c");
+//
+//		s = s.replaceAll("İ", "i");
+//
+//		s = s.replaceAll("Ö", "o");
+//
+//		s = s.replaceAll("Ü", "u");
+//
+//		s = s.replaceAll("Ş", "s");
+//
+//		s = s.replaceAll("Ğ", "g");
+//
+//		s = s.replaceAll("Ç", "c");
+//
+//		return s;
 
-		s = s.replaceAll("ç", "c");
+        return s.replaceAll("[ıİ]", "i").replaceAll("[öÖ]", "o")
+                .replaceAll("[üÜ]", "u").replaceAll("[şŞ]", "s")
+                .replaceAll("[ğĞ]", "g").replaceAll("[çÇ]", "c");
 
-		s = s.replaceAll("İ", "i");
+    }
 
-		s = s.replaceAll("Ö", "o");
+    private static String removeWordsShorterThan3(String passage) {
 
-		s = s.replaceAll("Ü", "u");
-
-		s = s.replaceAll("Ş", "s");
-
-		s = s.replaceAll("Ğ", "g");
-
-		s = s.replaceAll("Ç", "c");
-
-		return s;
-
-	}
-
-	private static String removeWordsShorterThan3(String passage) {
-
-		passage = passage.replaceAll("\\b[\\w']{1,2}\\b", "");
-		passage = passage.replaceAll("\\s{2,}", " ");
-		return passage;
-	}
+        passage = passage.replaceAll("\\b[\\w']{1,2}\\b", "");
+        passage = passage.replaceAll("\\s{2,}", " ");
+        return passage;
+    }
 
 }

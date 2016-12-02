@@ -22,7 +22,7 @@ public class Tweet {
 	public static final String GET_ALL_TWEETS_TEXT_GREATER_LAST = "GET_ALL_TWEETS_TEXT_GREATER_LAST";
 	public static final String GET_ALL_TWEETS_TEXT = "GET_ALL_TWEETS_TEXT";
 	public static final String GET_ENTRY_COUNT = "GET_ENTRY_COUNT";
-	public static final Integer BATCH_SIZE = 10000;
+	public static final Integer BATCH_SIZE = 100;
 	
 	@Id
 	@Column(name = "id")
