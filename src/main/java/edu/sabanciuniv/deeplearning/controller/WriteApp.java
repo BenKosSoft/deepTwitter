@@ -35,7 +35,6 @@ public class WriteApp {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}finally {
-			twRepo.closeConnection();
 		    try {
 				br.close();
 			} catch (IOException e) {
