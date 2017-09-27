@@ -6,6 +6,9 @@ import java.util.List;
 import edu.sabanciuniv.deeplearning.model.Tweet;
 import edu.sabanciuniv.deeplearning.repo.TweetRepository;
 
+/**
+ * This app reads tweets from database, modify them and writes into txt file.
+ */
 public class TextApp {
 
     private static TweetRepository tweetRepo = new TweetRepository();

@@ -11,8 +11,7 @@ import twitter4j.StatusListener;
 import twitter4j.TwitterStream;
 
 /**
- * Hello world!
- *
+ * This app reads tweets from twitter and writes into database.
  */
 public class App 
 {
