@@ -18,6 +18,7 @@ public class WriteApp {
         TweetRepository twRepo = new TweetRepository();
         twRepo.startScheduler();
 
+        //TODO: change file name
         BufferedReader br = new BufferedReader(new FileReader("tweets_26M_AllTurkish.txt"));
         try {
             Integer count = 0;

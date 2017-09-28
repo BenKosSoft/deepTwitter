@@ -24,6 +24,9 @@ public class TwitterAPI {
             ex.printStackTrace();
         }
 
+        /*
+         * TODO: Create oauth.properties file including below keys.
+         */
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
                 .setOAuthConsumerKey(prop.getProperty("ConsumerKey"))

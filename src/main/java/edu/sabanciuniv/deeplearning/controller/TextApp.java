@@ -19,6 +19,7 @@ public class TextApp {
         long tweetCount = tweetRepo.getTweetCount();
         try {
 
+            // TODO: change file name.
             PrintWriter writer = new PrintWriter("tweets.txt", "UTF-8");
             System.out.println("Tweet extraction is started...");
 
