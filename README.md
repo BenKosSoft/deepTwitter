@@ -14,18 +14,18 @@ Tweets should be clear for learning.
 This application has three components, below these three components will be clarified. Each application has own purpose,
 that's why there are three components.
 
-1. Crawler
+1. **Crawler**
 
     This application connects Twitter thanks to authorization keys provided by Twitter for developers. Needed tweets are
     Turkish tweets, that's why application is tracking ```tr``` language. However, one can change filter option. Collected
     tweets from Twitter are inserted into database.
 
-2. Filtering
+2. **Filtering**
 
     Unfortunately, tweets are hard to read and interpreted by computers. That's why, this application is removing
     unnecessary elements, words in tweets (emojis, links, short words etc.).
     
-3. Transfer
+3. **Transfer**
 
     This application reads tweets from text file and transfers to the database. At the end, clear database will be using
     with [Elastic Search](https://www.elastic.co/), but this is not scope of this application.
