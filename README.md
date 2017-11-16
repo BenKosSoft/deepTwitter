@@ -5,9 +5,8 @@ Tweet extraction application with Twitter API. Tweets will be using for
 Tweets should be clear for learning.
 
 **Designed and Implemented By:**
-
-* @mertkosan
-* @mbenlioglu
+ * [Mert Kosan](https://github.com/mertkosan)
+ * [M.Mucahid Benlioglu](https://github.com/mbenlioglu)
 
 ## About
 
